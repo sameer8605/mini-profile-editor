@@ -1,11 +1,16 @@
 import Link from "next/link";
-
+import { headers } from 'next/headers';
 
 
 export default async function Profile() {
- 
+ const host = headers().get('x-forwarded-host') || 'localhost:3000';
+  const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
 
- const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/profile`, {cache: 'no-store',});
+  const res = await fetch(`${protocol}://${host}/api/profile`, {
+    cache: 'no-store',
+  });
+
+// const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/profile`, {cache: 'no-store',});
 
   const profile = await res.json();
 console.log("pof",profile)
